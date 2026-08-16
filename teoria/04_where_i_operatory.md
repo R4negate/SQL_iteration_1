@@ -105,5 +105,4 @@ WHERE (status = 'shipped' OR status = 'paid')
   AND total_amount > 100;
 ```
 
-Bez nawiasów zapytanie może znaczyć coś innego, niż uczestnik zakłada.
 
