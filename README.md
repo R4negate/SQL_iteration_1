@@ -37,14 +37,8 @@ Sugerowana kolejność:
 7. `teoria/06_agregacje_group_by.md`
 8. `teoria/07_joiny_podstawy.md`
 
-Teoria ma być używana jako wsparcie do lekcji. Nie czytamy jej całej na głos.
-Najpierw tłumaczymy intuicję, potem pokazujemy składnię, a następnie przechodzimy
-do zadań.
 
-## Docelowy efekt pierwszej iteracji
-
-Po tej części kursu uczestnik powinien swobodnie pisać proste zapytania SQL:
-
+## Co poznamy
 - `SELECT`,
 - `FROM`,
 - `WHERE`,
