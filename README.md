@@ -36,6 +36,7 @@ Sugerowana kolejność:
 6. `teoria/05_sortowanie_null_i_wzorce.md`
 7. `teoria/06_agregacje_group_by.md`
 8. `teoria/07_joiny_podstawy.md`
+9. `teoria/08_przydatne_elementy_select.md`
 
 
 ## Co poznamy
@@ -51,7 +52,12 @@ Sugerowana kolejność:
 - `LIMIT`,
 - podstawowe agregacje,
 - `GROUP BY`,
-- podstawowe joiny.
+- podstawowe joiny,
+- `DISTINCT`,
+- przydatne funkcje w `SELECT`,
+- `ROUND`,
+- `COALESCE`,
+- `CASE WHEN`.
 
 
 ## Dobre stronki do samodzielnej nauki sql:

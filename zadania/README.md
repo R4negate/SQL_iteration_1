@@ -17,6 +17,8 @@ Po przygotowaniu bazy wykonuj zadania w kolejnosci:
 5. `05_sortowanie_null_i_wzorce.md`
 6. `06_agregacje_group_by.md`
 7. `07_joiny_podstawy.md`
+8. `08_przydatne_elementy_select.md`
+9. `09_zadania_dodatkowe.md`
 
 W zadaniach uzywaj tabel:
 
