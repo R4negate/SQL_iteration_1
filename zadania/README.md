@@ -18,7 +18,9 @@ Po przygotowaniu bazy wykonuj zadania w kolejnosci:
 6. `06_agregacje_group_by.md`
 7. `07_joiny_podstawy.md`
 8. `08_przydatne_elementy_select.md`
-9. `09_zadania_dodatkowe.md`
+9. `09_subquery.md`
+10. `10_typy_danych_i_daty.md`
+11. `11_zadania_dodatkowe.md`
 
 W zadaniach uzywaj tabel:
 

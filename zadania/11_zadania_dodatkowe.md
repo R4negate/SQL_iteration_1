@@ -1,4 +1,4 @@
-# Zadania 09 - zadania dodatkowe
+# Zadania 11 - zadania dodatkowe
 
 Te zadania łączą tematy z poprzednich lekcji:
 
@@ -277,4 +277,3 @@ Wynik powinien zawierać:
 Zaokrąglij `average_order_value` do dwóch miejsc po przecinku.
 
 Wynik posortuj od największej wartości `total_revenue`.
-
