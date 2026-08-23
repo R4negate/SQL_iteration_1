@@ -1,10 +1,10 @@
-# Zadania 07 - podstawowe joiny
+# Zadania 07 - joiny
 
 ## Zadanie 1
 
-Polacz `course.orders` z `course.customers`.
+Połącz `course.orders` z `course.customers`.
 
-Wynik powinien zawierac:
+Wynik powinien zawierać:
 
 - `order_id`
 - `order_date`
@@ -14,9 +14,9 @@ Wynik powinien zawierac:
 
 ## Zadanie 2
 
-Polacz `course.order_items` z `course.products`.
+Połącz `course.order_items` z `course.products`.
 
-Wynik powinien zawierac:
+Wynik powinien zawierać:
 
 - `order_item_id`
 - `order_id`
@@ -27,9 +27,9 @@ Wynik powinien zawierac:
 
 ## Zadanie 3
 
-Polacz `course.orders`, `course.order_items` i `course.products`.
+Połącz `course.orders`, `course.order_items` i `course.products`.
 
-Wynik powinien zawierac:
+Wynik powinien zawierać:
 
 - `order_id`
 - `order_date`
@@ -39,9 +39,9 @@ Wynik powinien zawierac:
 
 ## Zadanie 4
 
-Polacz `course.customers` z `course.orders` za pomoca `INNER JOIN`.
+Połącz `course.customers` z `course.orders` za pomocą `INNER JOIN`.
 
-Wynik powinien zawierac:
+Wynik powinien zawierać:
 
 - `customer_id`
 - `customer_name`
@@ -50,9 +50,9 @@ Wynik powinien zawierac:
 
 ## Zadanie 5
 
-Polacz `course.customers` z `course.orders` za pomoca `LEFT JOIN`.
+Połącz `course.customers` z `course.orders` za pomocą `LEFT JOIN`.
 
-Wynik powinien zawierac:
+Wynik powinien zawierać:
 
 - `customer_id`
 - `customer_name`
@@ -61,51 +61,152 @@ Wynik powinien zawierac:
 
 ## Zadanie 6
 
-Porownaj liczbe wierszy z zadania 4 i zadania 5.
+Porównaj liczbę wierszy z zadania 4 i zadania 5.
 
-Zapisz jednym zdaniem, z czego moze wynikac roznica.
+Zapisz jednym zdaniem, z czego może wynikać różnica.
 
 ## Zadanie 7
 
-Pokaz zamowienia razem z nazwa klienta, ale tylko dla zamowien o statusie `paid`.
+Użyj `RIGHT JOIN`, żeby pokazać wszystkich klientów i ich zamówienia.
+
+Wynik powinien zawierać:
+
+- `customer_id`
+- `customer_name`
+- `order_id`
+- `total_amount`
 
 ## Zadanie 8
 
-Pokaz pozycje zamowien razem z nazwa produktu, ale tylko dla produktow z kategorii `course`.
+Użyj `FULL OUTER JOIN`, żeby połączyć klientów i zamówienia.
+
+Wynik powinien zawierać:
+
+- `customer_id`
+- `customer_name`
+- `order_id`
+- `total_amount`
 
 ## Zadanie 9
 
-Policz liczbe zamowien per klient.
+Użyj `CROSS JOIN`, żeby pokazać wszystkie kombinacje klientów i produktów.
 
-Wynik powinien zawierac:
+Wynik powinien zawierać:
 
-- `customer_id`
 - `customer_name`
-- liczbe zamowien
+- `product_name`
 
 ## Zadanie 10
 
-Policz sume sprzedazy per klient.
+Użyj `SELF JOIN`, żeby pokazać pary klientów z tego samego kraju.
 
-Wynik powinien zawierac:
+Wynik powinien zawierać:
 
-- `customer_id`
-- `customer_name`
-- sume `total_amount`
+- `customer_1`
+- `customer_2`
+- `country`
 
 ## Zadanie 11
 
-Policz liczbe sprzedanych sztuk per produkt.
+Użyj wzorca anti join, żeby znaleźć klientów bez zamówień.
 
-Wynik powinien zawierac:
+Wynik powinien zawierać:
 
-- `product_id`
-- `product_name`
-- sume `quantity`
+- `customer_id`
+- `customer_name`
 
 ## Zadanie 12
 
-Pokaz klientow, ktorzy nie maja zadnego zamowienia.
+Użyj wzorca semi join, żeby znaleźć klientów, którzy mają przynajmniej jedno zamówienie.
 
-Uzyj `LEFT JOIN` oraz warunku sprawdzajacego `NULL` po stronie zamowien.
+Wynik powinien zawierać:
+
+- `customer_id`
+- `customer_name`
+
+Klient powinien pojawić się tylko raz, nawet jeśli ma wiele zamówień.
+
+## Zadanie 13
+
+Pokaż zamówienia razem z nazwą klienta, ale tylko dla zamówień o statusie `paid`.
+
+Wynik powinien zawierać:
+
+- `order_id`
+- `order_date`
+- `customer_name`
+- `total_amount`
+
+## Zadanie 14
+
+Pokaż pozycje zamówień razem z nazwą produktu, ale tylko dla produktów z kategorii `course`.
+
+Wynik powinien zawierać:
+
+- `order_id`
+- `product_name`
+- `category`
+- `quantity`
+
+## Zadanie 15
+
+Policz liczbę zamówień per klient.
+
+Wynik powinien zawierać:
+
+- `customer_id`
+- `customer_name`
+- `orders_count`
+
+## Zadanie 16
+
+Policz sumę sprzedaży per klient.
+
+Wynik powinien zawierać:
+
+- `customer_id`
+- `customer_name`
+- `total_revenue`
+
+## Zadanie 17
+
+Policz liczbę sprzedanych sztuk per produkt.
+
+Wynik powinien zawierać:
+
+- `product_id`
+- `product_name`
+- `units_sold`
+
+## Zadanie 18
+
+Pokaż przykład joinu wielu tabel: klient, zamówienie, pozycja zamówienia, produkt.
+
+Wynik powinien zawierać:
+
+- `customer_name`
+- `order_id`
+- `product_name`
+- `quantity`
+- `unit_price`
+
+## Zadanie 19
+
+Pokaż produkty, które nie zostały kupione.
+
+Wynik powinien zawierać:
+
+- `product_id`
+- `product_name`
+
+## Zadanie 20
+
+Pokaż klientów, którzy kupili przynajmniej jeden produkt z kategorii `course`.
+
+Wynik powinien zawierać:
+
+- `customer_id`
+- `customer_name`
+
+Klient powinien pojawić się tylko raz.
 

@@ -14,8 +14,6 @@ Te elementy są bardzo często używane w analizie danych:
 - zastępowanie brakujących wartości,
 - tworzenie prostych kategorii.
 
-Na końcu wrócimy też do joinów i poznamy kilka dodatkowych rodzajów łączenia tabel.
-
 ## DISTINCT
 
 `DISTINCT` usuwa duplikaty z wyniku zapytania.
@@ -208,101 +206,6 @@ To nie zmienia danych w tabeli.
 
 Zmienia tylko sposób pokazania wartości w wyniku zapytania.
 
-## Dodatkowo: pozostałe rodzaje JOIN
-
-Znasz już `INNER JOIN` i `LEFT JOIN`.
-
-Warto znać też kilka innych rodzajów łączenia tabel.
-
-## RIGHT JOIN
-
-`RIGHT JOIN` zachowuje wszystkie rekordy z prawej tabeli.
-
-```sql
-SELECT
-    c.customer_id,
-    c.customer_name,
-    o.order_id
-FROM course.orders o
-RIGHT JOIN course.customers c
-    ON o.customer_id = c.customer_id;
-```
-
-To zapytanie pokaże wszystkich klientów, nawet jeśli nie mają zamówień.
-
-W praktyce `RIGHT JOIN` często można przepisać jako `LEFT JOIN`, zamieniając kolejność tabel.
-
-## FULL OUTER JOIN
-
-`FULL OUTER JOIN` zachowuje rekordy z obu tabel.
-
-```sql
-SELECT
-    c.customer_id,
-    c.customer_name,
-    o.order_id
-FROM course.customers c
-FULL OUTER JOIN course.orders o
-    ON c.customer_id = o.customer_id;
-```
-
-Wynik może zawierać:
-
-- klientów z zamówieniami,
-- klientów bez zamówień,
-- zamówienia bez klienta, jeśli takie dane istnieją.
-
-## CROSS JOIN
-
-`CROSS JOIN` tworzy wszystkie możliwe kombinacje rekordów z dwóch tabel.
-
-```sql
-SELECT
-    c.customer_name,
-    p.product_name
-FROM course.customers c
-CROSS JOIN course.products p;
-```
-
-Jeśli mamy 8 klientów i 8 produktów, wynik będzie miał 64 wiersze.
-
-## SELF JOIN
-
-`SELF JOIN` oznacza połączenie tabeli samej ze sobą.
-
-Przykład: pokaż pary klientów z tego samego kraju.
-
-```sql
-SELECT
-    c1.customer_name AS customer_1,
-    c2.customer_name AS customer_2,
-    c1.country
-FROM course.customers c1
-INNER JOIN course.customers c2
-    ON c1.country = c2.country
-   AND c1.customer_id < c2.customer_id;
-```
-
-Używamy dwóch aliasów tej samej tabeli: `c1` i `c2`.
-
-## Anti join
-
-Anti join to wzorzec, który pozwala znaleźć rekordy bez dopasowania.
-
-Przykład: klienci bez zamówień.
-
-```sql
-SELECT
-    c.customer_id,
-    c.customer_name
-FROM course.customers c
-LEFT JOIN course.orders o
-    ON c.customer_id = o.customer_id
-WHERE o.order_id IS NULL;
-```
-
-To bardzo przydatny wzorzec do szukania brakujących danych.
-
 ## Najważniejsze rzeczy do zapamiętania
 
 - `DISTINCT` usuwa duplikaty z wyniku.
@@ -314,8 +217,3 @@ To bardzo przydatny wzorzec do szukania brakujących danych.
 - `COALESCE` pozwala zastąpić `NULL` inną wartością.
 - `CASE WHEN` tworzy kolumnę warunkową.
 - Funkcje w `SELECT` nie zmieniają danych w tabeli.
-- `RIGHT JOIN` zachowuje wszystkie rekordy z prawej tabeli.
-- `FULL OUTER JOIN` zachowuje rekordy z obu tabel.
-- `CROSS JOIN` tworzy wszystkie kombinacje rekordów.
-- `SELF JOIN` łączy tabelę z samą sobą.
-- Anti join pozwala znaleźć rekordy bez dopasowania.
