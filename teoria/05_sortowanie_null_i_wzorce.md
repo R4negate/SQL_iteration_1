@@ -6,7 +6,7 @@
 
 ```sql
 SELECT order_id, total_amount
-FROM orders
+FROM course.orders
 ORDER BY total_amount;
 ```
 
@@ -30,7 +30,7 @@ Przykład:
 
 ```sql
 SELECT order_id, total_amount
-FROM orders
+FROM course.orders
 ORDER BY total_amount DESC
 LIMIT 10;
 ```
@@ -43,7 +43,7 @@ To zapytanie pokazuje 10 największych zamówień.
 
 ```sql
 SELECT customer_id, customer_name, country
-FROM customers
+FROM course.customers
 WHERE country IN ('PL', 'DE', 'CZ');
 ```
 
@@ -55,7 +55,7 @@ To jest czytelniejsze niż kilka warunków `OR`.
 
 ```sql
 SELECT order_id, total_amount
-FROM orders
+FROM course.orders
 WHERE total_amount BETWEEN 50 AND 200;
 ```
 
@@ -69,7 +69,7 @@ To znaczy, że `BETWEEN 50 AND 200` zawiera również 50 i 200.
 
 ```sql
 SELECT customer_id, email
-FROM customers
+FROM course.customers
 WHERE email LIKE '%gmail%';
 ```
 
@@ -102,7 +102,7 @@ Do sprawdzania `NULL` używamy `IS NULL`.
 
 ```sql
 SELECT customer_id, customer_name, email
-FROM customers
+FROM course.customers
 WHERE email IS NULL;
 ```
 
@@ -110,7 +110,7 @@ WHERE email IS NULL;
 
 ```sql
 SELECT customer_id, customer_name, email
-FROM customers
+FROM course.customers
 WHERE email IS NOT NULL;
 ```
 

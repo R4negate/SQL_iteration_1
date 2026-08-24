@@ -78,7 +78,7 @@ Przykład SQL:
 
 ```sql
 SELECT customer_id, customer_name, country
-FROM customers
+FROM course.customers
 WHERE country = 'PL';
 ```
 
@@ -89,7 +89,7 @@ krótką instrukcję:
 
 ```sql
 SELECT customer_id, customer_name, country
-FROM customers
+FROM course.customers
 WHERE country = 'PL';
 ```
 

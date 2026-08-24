@@ -25,7 +25,7 @@ MAX(kolumna)  -- maksimum
 
 ```sql
 SELECT COUNT(*) AS orders_count
-FROM orders;
+FROM course.orders;
 ```
 
 To zapytanie liczy wszystkie rekordy w tabeli `orders`.
@@ -34,7 +34,7 @@ To zapytanie liczy wszystkie rekordy w tabeli `orders`.
 
 ```sql
 SELECT SUM(total_amount) AS total_revenue
-FROM orders;
+FROM course.orders;
 ```
 
 To zapytanie liczy sumę wartości zamówień.
@@ -43,7 +43,7 @@ To zapytanie liczy sumę wartości zamówień.
 
 ```sql
 SELECT AVG(total_amount) AS average_order_value
-FROM orders;
+FROM course.orders;
 ```
 
 To zapytanie liczy średnią wartość zamówienia.
@@ -56,7 +56,7 @@ Przykład:
 
 ```sql
 SELECT status, COUNT(*) AS orders_count
-FROM orders
+FROM course.orders
 GROUP BY status;
 ```
 
@@ -68,7 +68,7 @@ To zapytanie odpowiada na pytanie:
 
 ```sql
 SELECT country, COUNT(*) AS customers_count
-FROM customers
+FROM course.customers
 GROUP BY country
 ORDER BY customers_count DESC;
 ```
@@ -83,7 +83,7 @@ Przykład:
 
 ```sql
 SELECT country, COUNT(*) AS customers_count
-FROM customers
+FROM course.customers
 WHERE email IS NOT NULL
 GROUP BY country;
 ```
@@ -96,7 +96,7 @@ Najpierw zostają tylko klienci z emailem, potem SQL liczy ich per kraj.
 
 ```sql
 SELECT country, COUNT(*) AS customers_count
-FROM customers
+FROM course.customers
 GROUP BY country
 HAVING COUNT(*) > 10;
 ```

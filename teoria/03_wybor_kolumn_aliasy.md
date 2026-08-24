@@ -74,7 +74,7 @@ SELECT
     order_id,
     total_amount,
     total_amount * 1.23 AS total_with_vat
-FROM orders;
+FROM course.orders;
 ```
 
 `total_with_vat` to nowa kolumna w wyniku zapytania.
