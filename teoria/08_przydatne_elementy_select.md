@@ -174,6 +174,24 @@ Znaczenie:
 
 `CASE WHEN` działa podobnie do prostego `if / else`.
 
+Jeżeli masz kilka warunków, SQL sprawdza je od góry do dołu i bierze pierwszy
+pasujący:
+
+```sql
+SELECT
+    order_id,
+    total_amount,
+    CASE
+        WHEN total_amount >= 200 THEN 'very high'
+        WHEN total_amount >= 100 THEN 'medium'
+        ELSE 'low'
+    END AS order_tier
+FROM course.orders;
+```
+
+Dla kwoty `250` wynikiem będzie `very high`, bo pierwszy warunek już pasuje.
+SQL nie przechodzi wtedy do następnych warunków.
+
 ## Obliczenia w SELECT
 
 W `SELECT` można wykonywać proste obliczenia.
@@ -217,3 +235,25 @@ Zmienia tylko sposób pokazania wartości w wyniku zapytania.
 - `COALESCE` pozwala zastąpić `NULL` inną wartością.
 - `CASE WHEN` tworzy kolumnę warunkową.
 - Funkcje w `SELECT` nie zmieniają danych w tabeli.
+
+## Jak myśleć o funkcjach w SELECT
+
+Funkcje w `SELECT` działają na wartościach z pojedynczego wiersza albo na
+wyniku agregacji.
+
+Przykład na pojedynczym wierszu:
+
+```sql
+SELECT UPPER(customer_name) AS customer_name_upper
+FROM course.customers;
+```
+
+Przykład po agregacji:
+
+```sql
+SELECT ROUND(AVG(total_amount), 2) AS average_order_value
+FROM course.orders;
+```
+
+W obu przypadkach dane w tabeli zostają bez zmian. Zmieniasz tylko sposób
+pokazania danych w wyniku.

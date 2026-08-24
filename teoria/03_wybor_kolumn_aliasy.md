@@ -17,7 +17,7 @@ Powody:
 
 ```sql
 SELECT customer_id, customer_name, country
-FROM customers;
+FROM course.customers;
 ```
 
 To zapytanie pokazuje tylko trzy kolumny:
@@ -34,14 +34,14 @@ Poprawnie:
 
 ```sql
 SELECT customer_id, customer_name, country
-FROM customers;
+FROM course.customers;
 ```
 
 Niepoprawnie:
 
 ```sql
 SELECT customer_id customer_name country
-FROM customers;
+FROM course.customers;
 ```
 
 ## Alias AS
@@ -50,7 +50,7 @@ Alias to tymczasowa nazwa kolumny w wyniku zapytania.
 
 ```sql
 SELECT customer_name AS name
-FROM customers;
+FROM course.customers;
 ```
 
 Wynik będzie miał kolumnę `name`, ale tabela w bazie nadal ma kolumnę
@@ -79,3 +79,36 @@ FROM orders;
 
 `total_with_vat` to nowa kolumna w wyniku zapytania.
 
+## Kolejność kolumn ma znaczenie
+
+Kolumny w wyniku pojawiają się w takiej kolejności, w jakiej wpiszesz je po
+`SELECT`.
+
+Te dwa zapytania zwracają te same dane, ale w innej kolejności kolumn:
+
+```sql
+SELECT customer_id, customer_name
+FROM course.customers;
+```
+
+```sql
+SELECT customer_name, customer_id
+FROM course.customers;
+```
+
+Przy zwykłym podglądzie danych to często drobiazg. Przy raportach, eksporcie do
+pliku albo automatycznym sprawdzaniu zadań kolejność kolumn może być ważna.
+
+## Alias dla wyrażenia
+
+Alias jest szczególnie ważny, gdy kolumna jest wyliczana:
+
+```sql
+SELECT
+    order_id,
+    total_amount * 1.23 AS total_with_vat
+FROM course.orders;
+```
+
+Bez aliasu baza sama nada nazwę kolumnie, często mało czytelną, np. `?column?`
+albo całe wyrażenie matematyczne.

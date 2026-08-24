@@ -115,3 +115,67 @@ WHERE email IS NOT NULL;
 ```
 
 To zapytanie pokazuje rekordy, które mają email.
+
+## ORDER BY po filtrowaniu
+
+W praktyce często łączysz filtr i sortowanie:
+
+```sql
+SELECT order_id, status, total_amount
+FROM course.orders
+WHERE status = 'paid'
+ORDER BY total_amount DESC;
+```
+
+Najpierw zostają tylko zamówienia opłacone, a dopiero potem wynik jest
+sortowany od największej kwoty.
+
+## BETWEEN obejmuje granice
+
+```sql
+WHERE total_amount BETWEEN 100 AND 200
+```
+
+oznacza:
+
+```sql
+WHERE total_amount >= 100
+  AND total_amount <= 200
+```
+
+Czyli wartości `100` i `200` też pasują.
+
+## LIKE i symbole wieloznaczne
+
+W `LIKE` najczęściej użyjesz dwóch znaków:
+
+- `%` oznacza dowolny ciąg znaków, także pusty,
+- `_` oznacza dokładnie jeden dowolny znak.
+
+Przykład:
+
+```sql
+WHERE product_name LIKE '%Course%'
+```
+
+pasuje do nazw, które mają słowo `Course` gdziekolwiek w środku.
+
+## NULL nie jest zwykłą wartością
+
+`NULL` oznacza brak wartości, więc nie porównujemy go tak:
+
+```sql
+WHERE email = NULL
+```
+
+Poprawnie:
+
+```sql
+WHERE email IS NULL
+```
+
+albo:
+
+```sql
+WHERE email IS NOT NULL
+```

@@ -81,3 +81,41 @@ SELECT customer_id, customer_name, country
 FROM customers
 WHERE country = 'PL';
 ```
+
+## Jak czytać takie zapytanie od zera
+
+Na początku nie próbuj zapamiętywać wszystkiego naraz. Czytaj zapytanie jak
+krótką instrukcję:
+
+```sql
+SELECT customer_id, customer_name, country
+FROM customers
+WHERE country = 'PL';
+```
+
+Znaczenie:
+
+- `customers` to tabela, czyli miejsce, z którego bierzemy dane,
+- `customer_id`, `customer_name`, `country` to kolumny, które chcemy zobaczyć,
+- `'PL'` to zwykła wartość tekstowa,
+- `WHERE country = 'PL'` oznacza: zostaw tylko wiersze klientów z Polski.
+
+Wynik zapytania też jest tabelą: ma kolumny i wiersze. Różnica jest taka, że
+ta tabela wyniku nie musi istnieć na stałe w bazie. Jest tworzona na potrzeby
+jednego zapytania.
+
+## Schemat
+
+W PostgreSQL tabela może być zapisana razem ze schematem, np.:
+
+```sql
+course.customers
+```
+
+Tutaj:
+
+- `course` to schemat,
+- `customers` to tabela.
+
+Schemat działa trochę jak folder na tabele. W kursie używamy schematu
+`course`, żeby oddzielić dane kursowe od innych obiektów w bazie.

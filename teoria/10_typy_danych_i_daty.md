@@ -228,6 +228,48 @@ SELECT
 FROM course.orders;
 ```
 
+## DATE a TIMESTAMP
+
+`DATE` przechowuje tylko datę, np. `2026-05-10`.
+
+`TIMESTAMP` przechowuje datę i godzinę, np. `2026-05-10 14:30:00`.
+
+To ma znaczenie przy filtrowaniu. Dla kolumny typu `DATE` taki warunek jest
+czytelny:
+
+```sql
+WHERE order_date = '2026-05-10'
+```
+
+Dla kolumny typu `TIMESTAMP` często lepiej filtrować zakresem:
+
+```sql
+WHERE created_at >= '2026-05-10'
+  AND created_at < '2026-05-11'
+```
+
+Dzięki temu łapiesz cały dzień, a nie tylko dokładną północ.
+
+## Dodawanie i odejmowanie dat
+
+Daty można porównywać i odejmować.
+
+```sql
+SELECT
+    customer_id,
+    signup_date,
+    signup_date + INTERVAL '7 days' AS week_after_signup
+FROM course.customers;
+```
+
+Możesz też policzyć różnicę między dwiema datami:
+
+```sql
+SELECT DATE '2026-05-10' - DATE '2026-05-01' AS days_between;
+```
+
+Wynikiem będzie liczba dni.
+
 ## Najważniejsze rzeczy do zapamiętania
 
 - Każda kolumna ma typ danych.
@@ -240,4 +282,5 @@ FROM course.orders;
 - `EXTRACT` wyciąga część daty.
 - `DATE_TRUNC` pomaga grupować dane po czasie.
 - `INTERVAL` oznacza odstęp czasu.
-
+- Przy `TIMESTAMP` filtrowanie całego dnia zwykle rób zakresem od początku dnia
+  do początku następnego dnia.

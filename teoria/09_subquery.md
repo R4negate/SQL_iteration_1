@@ -137,6 +137,16 @@ WHERE EXISTS (
 
 To zapytanie pokazuje klientów, którzy mają przynajmniej jedno zamówienie.
 
+To jest przykład subquery skorelowanego. Zapytanie wewnętrzne używa kolumny
+z zapytania zewnętrznego:
+
+```sql
+o.customer_id = c.customer_id
+```
+
+Można to czytać tak: dla każdego klienta `c` sprawdź, czy istnieje przynajmniej
+jedno zamówienie `o` tego klienta.
+
 ## NOT EXISTS
 
 `NOT EXISTS` sprawdza brak dopasowania.
@@ -164,3 +174,28 @@ To zapytanie pokazuje klientów bez zamówień.
 - `EXISTS` sprawdza, czy istnieje dopasowany rekord.
 - `NOT EXISTS` sprawdza, czy dopasowany rekord nie istnieje.
 
+## Uwaga na NOT IN i NULL
+
+`NOT IN` bywa zdradliwe, jeśli zapytanie wewnętrzne może zwrócić `NULL`.
+Wtedy wynik może być inny, niż intuicyjnie oczekujesz.
+
+Jeżeli szukasz rekordów bez dopasowania, często bezpieczniej użyć
+`NOT EXISTS`:
+
+```sql
+SELECT
+    c.customer_id,
+    c.customer_name
+FROM course.customers c
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM course.orders o
+    WHERE o.customer_id = c.customer_id
+);
+```
+
+Na początku zapamiętaj prostą zasadę:
+
+- `IN` jest wygodne do listy wartości,
+- `EXISTS` i `NOT EXISTS` są bardzo dobre do sprawdzania istnienia relacji
+  między tabelami.

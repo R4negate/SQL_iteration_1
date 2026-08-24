@@ -122,3 +122,51 @@ Wynik powinien zawierać:
 - `day_of_week`
 - `total_revenue`
 
+## Zadanie 13
+
+Pokaż planowany termin obsługi zamówienia jako 7 dni po `order_date`.
+
+Wynik powinien zawierać:
+
+- `order_id`
+- `order_date`
+- `ship_deadline`
+
+Wynik posortuj po `order_id`.
+
+## Zadanie 14
+
+Dla klientów, którzy mają zamówienia, policz liczbę dni od rejestracji do pierwszego zamówienia.
+
+Wynik powinien zawierać:
+
+- `customer_id`
+- `customer_name`
+- `signup_date`
+- `first_order_date`
+- `days_to_first_order`
+
+Wynik posortuj po `customer_id`.
+
+## Zadanie 15
+
+Pokaż kwartał zamówienia.
+
+Wynik powinien zawierać:
+
+- `order_id`
+- `order_date`
+- `order_quarter`
+
+Wynik posortuj po `order_id`.
+
+## Zadanie 16
+
+Policz sprzedaż per tydzień używając `DATE_TRUNC`.
+
+Wynik powinien zawierać:
+
+- `sales_week`
+- `total_revenue`
+
+Wynik posortuj po `sales_week`.

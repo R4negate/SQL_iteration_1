@@ -114,3 +114,68 @@ To zapytanie pokazuje tylko kraje, które mają więcej niż 10 klientów.
 - Użycie zwykłej kolumny w `SELECT` bez dodania jej do `GROUP BY`.
 - Mylenie `WHERE` i `HAVING`.
 - Brak aliasów dla metryk.
+
+## COUNT(*) a COUNT(kolumna)
+
+`COUNT(*)` liczy wiersze.
+
+```sql
+SELECT COUNT(*) AS rows_count
+FROM course.customers;
+```
+
+`COUNT(email)` liczy tylko te wiersze, w których `email` nie jest `NULL`.
+
+```sql
+SELECT COUNT(email) AS customers_with_email
+FROM course.customers;
+```
+
+To ważna różnica. Jeśli kolumna ma braki danych, `COUNT(kolumna)` może dać
+mniejszy wynik niż `COUNT(*)`.
+
+## Co musi być w GROUP BY
+
+Jeżeli w `SELECT` pokazujesz zwykłą kolumnę oraz agregację, zwykła kolumna musi
+być w `GROUP BY`.
+
+Poprawnie:
+
+```sql
+SELECT status, COUNT(*) AS orders_count
+FROM course.orders
+GROUP BY status;
+```
+
+Niepoprawnie:
+
+```sql
+SELECT status, order_date, COUNT(*) AS orders_count
+FROM course.orders
+GROUP BY status;
+```
+
+Problem: `order_date` nie jest ani agregacją, ani częścią `GROUP BY`.
+
+## Kolejność myślenia
+
+Przy agregacjach zadawaj sobie pytania w tej kolejności:
+
+1. Z której tabeli biorę dane?
+2. Czy najpierw filtruję pojedyncze wiersze przez `WHERE`?
+3. Po czym grupuję dane?
+4. Jakie metryki liczę w każdej grupie?
+5. Czy filtruję gotowe grupy przez `HAVING`?
+
+Przykład:
+
+```sql
+SELECT status, SUM(total_amount) AS total_revenue
+FROM course.orders
+WHERE total_amount > 0
+GROUP BY status
+HAVING SUM(total_amount) > 200;
+```
+
+Najpierw SQL odrzuca pojedyncze wiersze przez `WHERE`, potem grupuje po
+`status`, liczy sumę i dopiero na końcu filtruje grupy przez `HAVING`.

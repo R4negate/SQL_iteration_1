@@ -145,3 +145,77 @@ Napisz jedno zapytanie, które pokaże:
 - `customer_name`
 - `country` zapisane wielkimi literami jako `country_upper`
 - email z wartością zastępczą `missing email`, jeśli email jest `NULL`
+
+## Zadanie 16
+
+Stwórz etykietę klienta w formacie:
+
+```text
+customer_id - customer_name
+```
+
+Wynik powinien zawierać:
+
+- `customer_id`
+- `customer_label`
+
+Wynik posortuj po `customer_id`.
+
+## Zadanie 17
+
+Pokaż email klienta, a jeśli email jest `NULL`, pokaż tekst:
+
+```text
+brak emaila
+```
+
+Wynik powinien zawierać:
+
+- `customer_id`
+- `customer_name`
+- `email_or_placeholder`
+
+Wynik posortuj po `customer_id`.
+
+## Zadanie 18
+
+Dodaj do produktów kolumnę `price_bucket`.
+
+Zasady:
+
+- jeśli `base_price < 50`, pokaż `budget`,
+- jeśli `base_price < 150`, pokaż `standard`,
+- w innym przypadku pokaż `premium`.
+
+Wynik powinien zawierać:
+
+- `product_id`
+- `product_name`
+- `base_price`
+- `price_bucket`
+
+Wynik posortuj po `product_id`.
+
+## Zadanie 19
+
+Pokaż zamówienia z kwotą powiększoną o VAT 23%.
+
+Kwotę z VAT zaokrąglij do dwóch miejsc po przecinku.
+
+Wynik powinien zawierać:
+
+- `order_id`
+- `total_amount`
+- `total_with_vat`
+
+Wynik posortuj po `order_id`.
+
+## Zadanie 20
+
+Pokaż unikalne kanały pozyskania klientów wielkimi literami.
+
+Wynik powinien zawierać jedną kolumnę:
+
+- `channel`
+
+Wynik posortuj po `channel`.

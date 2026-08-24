@@ -22,7 +22,7 @@ Znaczenie:
 
 ```sql
 SELECT *
-FROM customers;
+FROM course.customers;
 ```
 
 `*` oznacza: pokaż wszystkie kolumny.
@@ -36,7 +36,7 @@ wybieramy tylko konkretne kolumny.
 
 ```sql
 SELECT *
-FROM customers
+FROM course.customers
 LIMIT 10;
 ```
 
@@ -58,10 +58,37 @@ Człowiek pisze:
 
 ```sql
 SELECT *
-FROM customers;
+FROM course.customers;
 ```
 
 Ale SQL zapytania wykonuje w innej kolejności:
 
-1. Weź tabelę `customers`.
+1. Weź tabelę `course.customers`.
 2. Pokaż wszystkie kolumny.
+
+## Co oznacza wynik
+
+Zapytanie `SELECT` zwraca tabelę wyniku. Taka tabela ma:
+
+- kolumny, czyli nazwy informacji,
+- wiersze, czyli konkretne rekordy.
+
+Jeżeli napiszesz:
+
+```sql
+SELECT customer_id, customer_name
+FROM course.customers
+LIMIT 3;
+```
+
+to prosisz bazę o dwie kolumny i maksymalnie trzy wiersze.
+
+`LIMIT` nie mówi, które rekordy są najważniejsze. Bez sortowania baza może
+zwrócić dowolne pierwsze pasujące wiersze. Sortowanie pojawi się w osobnej
+lekcji.
+
+## Średnik
+
+Średnik `;` oznacza koniec zapytania. W wielu narzędziach zapytanie zadziała
+bez średnika, ale warto go pisać, bo ułatwia oddzielenie jednego query od
+następnego.

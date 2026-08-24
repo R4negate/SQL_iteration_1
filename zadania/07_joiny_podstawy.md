@@ -384,3 +384,88 @@ Przykładowe wartości `issue_type`:
 
 - `customer_without_order`
 - `product_without_sale`
+
+## Zadanie 31
+
+Pokaż wszystkich klientów razem z liczbą ich zamówień.
+
+Klienci bez zamówień też mają się pojawić.
+
+Wynik powinien zawierać:
+
+- `customer_id`
+- `customer_name`
+- `orders_count`
+
+Wynik posortuj od największej liczby zamówień, a przy remisie po `customer_id` rosnąco.
+
+## Zadanie 32
+
+Pokaż wszystkie produkty razem z łączną liczbą sprzedanych sztuk.
+
+Produkty bez sprzedaży też mają się pojawić. Dla nich pokaż `0`.
+
+Wynik powinien zawierać:
+
+- `product_id`
+- `product_name`
+- `units_sold`
+
+Wynik posortuj od największej liczby sprzedanych sztuk, a przy remisie po `product_id` rosnąco.
+
+## Zadanie 33
+
+Pokaż sprzedaż per kanał pozyskania klienta.
+
+Wynik powinien zawierać:
+
+- `acquisition_channel`
+- `orders_count`
+- `total_revenue`
+
+Wynik posortuj od największej wartości `total_revenue`.
+
+## Zadanie 34
+
+Pokaż unikalne pary klient-produkt dla opłaconych zamówień.
+
+Wynik powinien zawierać:
+
+- `customer_id`
+- `customer_name`
+- `product_name`
+
+Klient i produkt powinny pojawić się tylko raz dla danej pary.
+
+Wynik posortuj po `customer_id`, a potem po `product_name`.
+
+## Zadanie 35
+
+Znajdź klientów, którzy kupili produkty z co najmniej dwóch różnych kategorii.
+
+Wynik powinien zawierać:
+
+- `customer_id`
+- `customer_name`
+- `categories_count`
+
+Wynik posortuj po `customer_id`.
+
+## Zadanie 36
+
+Pokaż kontrolę wartości zamówień: porównaj `total_amount` z sumą pozycji zamówienia.
+
+Wynik powinien zawierać:
+
+- `order_id`
+- `total_amount`
+- `items_value`
+- `difference`
+
+Kolumna `difference` ma oznaczać:
+
+```text
+total_amount - items_value
+```
+
+Wynik posortuj po `order_id`.
