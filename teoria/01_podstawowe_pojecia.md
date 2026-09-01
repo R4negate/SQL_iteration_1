@@ -70,6 +70,21 @@ Później będziemy nazywać to słowem `grain`.
 
 SQL to język zadawania pytań do bazy danych.
 
+W aplikacjach SQL często kojarzy się z prostym CRUD:
+
+- dodaj rekord,
+- odczytaj rekord,
+- zmień rekord,
+- usuń rekord.
+
+W data engineeringu SQL jest czymś większym. Służy do:
+
+- łączenia danych z wielu tabel,
+- czyszczenia i standaryzowania rekordów,
+- liczenia metryk biznesowych,
+- budowania tabel pod raporty i dashboardy,
+- przygotowywania danych dla kolejnych etapów pipeline'u.
+
 Przykład pytania biznesowego:
 
 > Pokaż klientów z Polski.
@@ -119,3 +134,61 @@ Tutaj:
 
 Schemat działa trochę jak folder na tabele. W kursie używamy schematu
 `course`, żeby oddzielić dane kursowe od innych obiektów w bazie.
+
+## Baza, schemat i tabela razem
+
+W PostgreSQL można myśleć o trzech poziomach:
+
+```text
+baza danych -> schemat -> tabela
+```
+
+Przykład:
+
+```text
+moja_baza -> course -> customers
+```
+
+Czyli pełna nazwa tabeli to:
+
+```sql
+course.customers
+```
+
+To jest ważne, bo w prawdziwych projektach jedna baza może zawierać wiele
+schematów, np.:
+
+- `raw` albo `bronze` - dane surowe,
+- `silver` - dane oczyszczone,
+- `gold` - dane gotowe do raportowania.
+
+Na razie pracujemy na jednym schemacie `course`, ale sposób myślenia jest taki
+sam: schemat pomaga uporządkować tabele według ich roli.
+
+## Co oznacza jeden wiersz
+
+Każda tabela ma swój sens biznesowy.
+
+Przykłady:
+
+- jeden wiersz w `course.customers` oznacza jednego klienta,
+- jeden wiersz w `course.products` oznacza jeden produkt,
+- jeden wiersz w `course.orders` oznacza jedno zamówienie,
+- jeden wiersz w `course.order_items` oznacza jedną pozycję zamówienia.
+
+To pytanie będzie wracało bardzo często:
+
+> Co oznacza jeden wiersz w tej tabeli?
+
+W data engineeringu nazywa się to czasem `grain`, czyli poziom szczegółowości
+danych. Jeżeli nie rozumiemy, co oznacza jeden wiersz, łatwo policzyć błędne
+sumy, średnie albo liczby rekordów.
+
+## Najważniejsze rzeczy do zapamiętania
+
+- SQL służy do pracy z danymi w bazie.
+- `SELECT` odczytuje dane i nie zmienia tabel.
+- Baza danych zawiera schematy.
+- Schemat zawiera tabele.
+- Tabela zawiera wiersze i kolumny.
+- Jeden wiersz powinien mieć jasne znaczenie biznesowe.

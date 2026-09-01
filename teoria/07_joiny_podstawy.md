@@ -259,6 +259,89 @@ To właśnie dzięki temu możemy wykonać join:
 ON o.customer_id = c.customer_id
 ```
 
+## Constraints, czyli reguły pilnujące danych
+
+`PRIMARY KEY` i `FOREIGN KEY` są przykładami constraints.
+
+Constraint to reguła zapisana w bazie danych. Jeżeli ktoś próbuje wstawić dane,
+które łamią regułę, baza powinna zgłosić błąd.
+
+Najczęstsze constraints:
+
+```text
+PRIMARY KEY - unikalny identyfikator rekordu
+FOREIGN KEY - wymaga dopasowanego rekordu w innej tabeli
+NOT NULL    - kolumna musi mieć wartość
+UNIQUE      - wartość nie może się powtarzać
+CHECK       - wartość musi spełnić warunek
+DEFAULT     - wartość domyślna, jeśli nic nie podamy
+```
+
+Przykład:
+
+```sql
+quantity INT NOT NULL
+```
+
+To znaczy:
+
+> Ilość produktu nie może być pusta.
+
+Przykład:
+
+```sql
+CHECK (quantity > 0)
+```
+
+To znaczy:
+
+> Ilość produktu musi być większa od zera.
+
+Constraints są ważne w data engineeringu, bo pilnują jakości danych już na
+poziomie bazy. Lepiej, żeby pipeline zatrzymał się z jasnym błędem, niż żeby
+po cichu zapisał uszkodzone dane.
+
+## Indeks a join
+
+Indeks nie zmienia wyniku zapytania.
+
+Indeks pomaga bazie szybciej znaleźć rekordy.
+
+Przykład:
+
+```sql
+CREATE INDEX idx_orders_customer_id
+ON course.orders(customer_id);
+```
+
+Taki indeks może pomóc przy zapytaniach, które często łączą albo filtrują dane
+po `customer_id`.
+
+Przykład:
+
+```sql
+SELECT
+    c.customer_name,
+    o.order_id
+FROM course.customers c
+INNER JOIN course.orders o
+    ON c.customer_id = o.customer_id;
+```
+
+Baza musi znaleźć zamówienia dla klienta. Indeks na `orders.customer_id` może
+jej w tym pomóc.
+
+Indeksy nie są jednak darmowe:
+
+- zajmują miejsce,
+- spowalniają operacje zapisu,
+- trzeba je dobierać do prawdziwych zapytań.
+
+Na tym etapie najważniejsza intuicja jest taka:
+
+> Klucze opisują relacje i pilnują spójności, a indeksy pomagają szybciej
+> czytać dane.
+
 ## Relacje między tabelami
 
 Joiny są łatwiejsze, gdy rozumiemy relacje między tabelami.
@@ -642,6 +725,8 @@ Prosta intuicja:
 - `FOREIGN KEY` wskazuje rekord w innej tabeli.
 - `FOREIGN KEY` może się powtarzać, np. wiele zamówień może wskazywać tego samego klienta.
 - `FOREIGN KEY` pomaga pilnować spójności danych.
+- Constraints to reguły pilnujące jakości danych.
+- Indeks nie zmienia wyniku zapytania, tylko może przyspieszyć odczyt.
 - `JOIN` łączy tabele.
 - `ON` definiuje warunek połączenia.
 - `ON` mówi, jak rekordy z dwóch tabel mają się dopasować.

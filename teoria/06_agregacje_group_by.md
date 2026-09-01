@@ -11,10 +11,58 @@ Przykłady pytań:
 - Jaka jest średnia wartość zamówienia?
 - Jaka jest największa płatność?
 
+W data engineeringu agregacje są podstawą raportowania. Surowe dane często są
+zapisane bardzo szczegółowo, np. jedno zamówienie albo jedna pozycja zamówienia
+w jednym wierszu. Raport zwykle potrzebuje innego poziomu:
+
+- sprzedaż per kraj,
+- sprzedaż per miesiąc,
+- liczba zamówień per status,
+- średnia wartość zamówienia per kanał sprzedaży.
+
+Agregacja zmienia więc poziom szczegółowości wyniku.
+
+## Grain przy agregacjach
+
+`Grain` oznacza, co reprezentuje jeden wiersz.
+
+Przed agregacją pytamy:
+
+> Co oznacza jeden wiersz w tabeli źródłowej?
+
+Po agregacji pytamy:
+
+> Co oznacza jeden wiersz w wyniku?
+
+Przykład:
+
+```sql
+SELECT status, COUNT(*) AS orders_count
+FROM course.orders
+GROUP BY status;
+```
+
+Tabela `course.orders` ma grain:
+
+```text
+jeden wiersz = jedno zamówienie
+```
+
+Wynik po `GROUP BY status` ma grain:
+
+```text
+jeden wiersz = jeden status zamówienia
+```
+
+To jest bardzo ważne, bo po agregacji nie patrzymy już na pojedyncze
+zamówienia, tylko na grupy zamówień.
+
 ## Najważniejsze funkcje agregujące
 
 ```sql
 COUNT(*)       -- liczba rekordów
+COUNT(kolumna) -- liczba rekordów, gdzie kolumna nie jest NULL
+COUNT(DISTINCT kolumna) -- liczba unikalnych wartości
 SUM(kolumna)  -- suma
 AVG(kolumna)  -- średnia
 MIN(kolumna)  -- minimum
@@ -29,6 +77,24 @@ FROM course.orders;
 ```
 
 To zapytanie liczy wszystkie rekordy w tabeli `orders`.
+
+## COUNT DISTINCT
+
+`COUNT(DISTINCT kolumna)` liczy unikalne wartości.
+
+Przykład:
+
+```sql
+SELECT COUNT(DISTINCT customer_id) AS customers_with_orders
+FROM course.orders;
+```
+
+To zapytanie odpowiada na pytanie:
+
+> Ilu różnych klientów złożyło zamówienie?
+
+Gdy jeden klient ma trzy zamówienia, `COUNT(*)` policzy trzy wiersze, ale
+`COUNT(DISTINCT customer_id)` policzy tego klienta tylko raz.
 
 ## SUM
 
@@ -179,3 +245,101 @@ HAVING SUM(total_amount) > 200;
 
 Najpierw SQL odrzuca pojedyncze wiersze przez `WHERE`, potem grupuje po
 `status`, liczy sumę i dopiero na końcu filtruje grupy przez `HAVING`.
+
+## Agregacja warunkowa z CASE
+
+Czasami chcemy policzyć kilka metryk w jednym zapytaniu.
+
+Przykład: liczba wszystkich zamówień oraz liczba zamówień w konkretnych
+statusach.
+
+```sql
+SELECT
+    COUNT(*) AS total_orders,
+    SUM(CASE WHEN status = 'paid' THEN 1 ELSE 0 END) AS paid_orders,
+    SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) AS pending_orders,
+    SUM(CASE WHEN status = 'cancelled' THEN 1 ELSE 0 END) AS cancelled_orders
+FROM course.orders;
+```
+
+Jak to czytać:
+
+- `CASE WHEN status = 'paid' THEN 1 ELSE 0 END` tworzy tymczasowo wartości
+  `1` albo `0`,
+- `SUM(...)` dodaje te jedynki,
+- wynik mówi, ile wierszy spełniło warunek.
+
+To jest częsty wzorzec analityczny. Pozwala zbudować kilka liczników bez
+pisania kilku osobnych zapytań.
+
+Ten sam wzorzec można połączyć z `GROUP BY`:
+
+```sql
+SELECT
+    country,
+    COUNT(*) AS customers_count,
+    SUM(CASE WHEN email IS NULL THEN 1 ELSE 0 END) AS customers_without_email
+FROM course.customers
+GROUP BY country;
+```
+
+Wynik ma jeden wiersz per kraj i dwie metryki dla każdego kraju.
+
+## Agregacje po joinach
+
+Przy agregacjach po joinach trzeba uważać na zmianę liczby wierszy.
+
+Przykład:
+
+```sql
+SELECT COUNT(*) AS rows_after_join
+FROM course.orders o
+INNER JOIN course.order_items oi
+    ON o.order_id = oi.order_id;
+```
+
+To nie liczy zamówień. To liczy pozycje zamówień po połączeniu tabel.
+
+Jeżeli jedno zamówienie ma trzy produkty, po joinie pojawi się trzy razy.
+
+Jeśli naprawdę chcesz policzyć zamówienia po takim joinie, użyj:
+
+```sql
+SELECT COUNT(DISTINCT o.order_id) AS orders_count
+FROM course.orders o
+INNER JOIN course.order_items oi
+    ON o.order_id = oi.order_id;
+```
+
+Prosta zasada:
+
+> Po każdym joinie upewnij się, co oznacza jeden wiersz wyniku.
+
+## Typowy schemat zapytania analitycznego
+
+Wiele zapytań analitycznych ma podobny kształt:
+
+1. wybierz tabelę startową,
+2. dołącz potrzebne tabele,
+3. odfiltruj niepotrzebne wiersze,
+4. policz metryki,
+5. pogrupuj wynik,
+6. posortuj wynik.
+
+Przykład:
+
+```sql
+SELECT
+    c.country,
+    SUM(o.total_amount) AS total_revenue
+FROM course.orders o
+INNER JOIN course.customers c
+    ON o.customer_id = c.customer_id
+WHERE o.status = 'paid'
+GROUP BY c.country
+ORDER BY total_revenue DESC;
+```
+
+To zapytanie odpowiada na pytanie:
+
+> Jaka jest suma opłaconych zamówień per kraj klienta?

@@ -67,6 +67,40 @@ SELECT
 FROM course.customers;
 ```
 
+## TRIM
+
+`TRIM` usuwa białe znaki z początku i końca tekstu.
+
+Przykład:
+
+```sql
+SELECT
+    customer_name,
+    TRIM(customer_name) AS customer_name_clean
+FROM course.customers;
+```
+
+Białe znaki to np. spacje. W danych z prawdziwych systemów zdarzają się takie
+wartości:
+
+```text
+' Anna Kowalska '
+```
+
+Dla człowieka to nadal Anna Kowalska, ale dla bazy tekst ze spacjami jest inną
+wartością niż tekst bez spacji.
+
+Dlatego w czyszczeniu danych często łączy się funkcje:
+
+```sql
+SELECT
+    LOWER(TRIM(email)) AS email_clean
+FROM course.customers;
+```
+
+To zapytanie najpierw usuwa spacje z początku i końca, a potem zamienia tekst na
+małe litery.
+
 ## LENGTH
 
 `LENGTH` liczy liczbę znaków w tekście.
@@ -150,6 +184,45 @@ Znaczenie:
 
 `COALESCE` nie zmienia danych w tabeli. Zmienia tylko wynik zapytania.
 
+## NULLIF
+
+`NULLIF` zwraca `NULL`, jeżeli dwie wartości są sobie równe.
+
+Przykład:
+
+```sql
+SELECT NULLIF('', '') AS empty_text_as_null;
+```
+
+Wynikiem będzie `NULL`.
+
+W praktyce `NULLIF` bywa przydatny przy czyszczeniu danych, kiedy źródło zapisuje
+brak wartości jako pusty tekst:
+
+```sql
+SELECT
+    customer_id,
+    NULLIF(email, '') AS email
+FROM course.customers;
+```
+
+Znaczenie:
+
+- jeśli `email` jest pustym tekstem, pokaż `NULL`,
+- w innym przypadku pokaż normalny email.
+
+`COALESCE` i `NULLIF` często występują razem:
+
+```sql
+SELECT
+    customer_id,
+    COALESCE(NULLIF(email, ''), 'missing email') AS email
+FROM course.customers;
+```
+
+To zapytanie najpierw zamienia pusty tekst na `NULL`, a potem `NULL` na tekst
+zastępczy.
+
 ## CASE WHEN
 
 `CASE WHEN` pozwala stworzyć kolumnę zależną od warunku.
@@ -224,16 +297,47 @@ To nie zmienia danych w tabeli.
 
 Zmienia tylko sposób pokazania wartości w wyniku zapytania.
 
+## DATE_TRUNC i EXTRACT w SELECT
+
+Niektóre funkcje pomagają pracować z datami.
+
+`DATE_TRUNC` ucina datę do wybranego poziomu, np. miesiąca:
+
+```sql
+SELECT
+    order_id,
+    order_date,
+    DATE_TRUNC('month', order_date) AS order_month
+FROM course.orders;
+```
+
+`EXTRACT` wyciąga konkretną część daty:
+
+```sql
+SELECT
+    order_id,
+    order_date,
+    EXTRACT(YEAR FROM order_date) AS order_year,
+    EXTRACT(MONTH FROM order_date) AS order_month_number
+FROM course.orders;
+```
+
+Te funkcje pojawią się też w lekcji o typach danych i datach, ale warto je
+kojarzyć jako przydatne narzędzia w `SELECT`.
+
 ## Najważniejsze rzeczy do zapamiętania
 
 - `DISTINCT` usuwa duplikaty z wyniku.
 - `UPPER` zamienia tekst na wielkie litery.
 - `LOWER` zamienia tekst na małe litery.
+- `TRIM` usuwa spacje z początku i końca tekstu.
 - `LENGTH` liczy długość tekstu.
 - `||` łączy tekst w PostgreSQL.
 - `ROUND` zaokrągla liczby.
 - `COALESCE` pozwala zastąpić `NULL` inną wartością.
+- `NULLIF` pozwala zamienić konkretną wartość na `NULL`.
 - `CASE WHEN` tworzy kolumnę warunkową.
+- `DATE_TRUNC` i `EXTRACT` pomagają pracować z datami.
 - Funkcje w `SELECT` nie zmieniają danych w tabeli.
 
 ## Jak myśleć o funkcjach w SELECT

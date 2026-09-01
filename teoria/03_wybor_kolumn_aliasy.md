@@ -112,3 +112,59 @@ FROM course.orders;
 
 Bez aliasu baza sama nada nazwę kolumnie, często mało czytelną, np. `?column?`
 albo całe wyrażenie matematyczne.
+
+## Alias i ORDER BY
+
+Aliasu z `SELECT` można użyć w `ORDER BY`.
+
+Przykład:
+
+```sql
+SELECT
+    order_id,
+    total_amount * 1.23 AS total_with_vat
+FROM course.orders
+ORDER BY total_with_vat DESC;
+```
+
+To jest wygodne, bo nie trzeba drugi raz przepisywać całego wyrażenia:
+
+```sql
+total_amount * 1.23
+```
+
+Warto jednak pamiętać, że alias działa tylko w wyniku tego jednego zapytania.
+Nie tworzy nowej kolumny w tabeli.
+
+## Alias tabeli a alias kolumny
+
+W SQL spotkasz dwa rodzaje aliasów:
+
+- alias kolumny,
+- alias tabeli.
+
+Alias kolumny zmienia nazwę kolumny w wyniku:
+
+```sql
+SELECT customer_name AS name
+FROM course.customers;
+```
+
+Alias tabeli skraca nazwę tabeli w zapytaniu:
+
+```sql
+SELECT c.customer_name
+FROM course.customers c;
+```
+
+Tutaj `c` oznacza tabelę `course.customers`, ale tylko w tym zapytaniu.
+
+To jest szczególnie przydatne przy joinach, gdy w jednym zapytaniu używamy
+kilku tabel.
+
+## Najważniejsze rzeczy do zapamiętania
+
+- Alias kolumny zmienia nazwę kolumny w wyniku.
+- Alias tabeli skraca nazwę tabeli w zapytaniu.
+- Alias nie zmienia danych ani struktury tabeli.
+- Aliasu z `SELECT` można użyć w `ORDER BY`.

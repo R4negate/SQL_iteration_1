@@ -42,6 +42,25 @@ Przykłady:
 - `order_id`
 - `quantity`
 
+## BIGINT
+
+`BIGINT` też przechowuje liczby całkowite, ale pozwala zapisać dużo większe
+wartości niż `INT`.
+
+W prostych ćwiczeniach zwykle wystarczy `INT`.
+
+W prawdziwych systemach `BIGINT` często pojawia się przy:
+
+- identyfikatorach zdarzeń,
+- technicznych ID w dużych tabelach,
+- licznikach w systemach o bardzo dużym ruchu.
+
+Przykład:
+
+```sql
+event_id BIGINT
+```
+
 ## VARCHAR
 
 `VARCHAR` przechowuje tekst.
@@ -59,6 +78,28 @@ Tekst w SQL zapisujemy w apostrofach:
 WHERE country = 'PL'
 ```
 
+`VARCHAR(120)` oznacza tekst o maksymalnej długości 120 znaków.
+
+Limit długości jest formą kontroli jakości danych. Jeżeli `country` ma mieć
+krótki kod kraju, nie chcemy przypadkowo wstawić tam długiego opisu.
+
+## TEXT
+
+`TEXT` przechowuje dłuższy tekst bez konkretnego limitu długości.
+
+Przykłady:
+
+- opis produktu,
+- komentarz,
+- treść wiadomości.
+
+W danych analitycznych często spotkasz i `VARCHAR`, i `TEXT`.
+
+Prosta intuicja:
+
+- `VARCHAR(n)` - tekst z limitem długości,
+- `TEXT` - długi tekst bez ustalonego limitu.
+
 ## NUMERIC
 
 `NUMERIC` przechowuje dokładne liczby z miejscami po przecinku.
@@ -70,6 +111,23 @@ Przykłady:
 - `unit_price`
 
 Do kwot pieniężnych często używa się właśnie `NUMERIC`.
+
+Przykład:
+
+```sql
+total_amount NUMERIC(10, 2)
+```
+
+Znaczenie:
+
+- maksymalnie 10 cyfr łącznie,
+- 2 cyfry po przecinku.
+
+Do pieniędzy lepiej używać `NUMERIC`, a nie `FLOAT`.
+
+`FLOAT` jest typem przybliżonym i może powodować drobne błędy zaokrągleń.
+Dla pomiarów technicznych może być w porządku, ale dla kwot i raportów
+finansowych chcemy dokładności.
 
 ## DATE
 
@@ -97,6 +155,22 @@ Przykład wartości:
 ```
 
 W naszej bazie ćwiczeniowej mamy głównie `DATE`, ale w prawdziwych systemach `TIMESTAMP` jest bardzo częsty.
+
+W PostgreSQL spotkasz też `TIMESTAMPTZ`, czyli timestamp z informacją o strefie
+czasowej.
+
+Uproszczona różnica:
+
+- `TIMESTAMP` - data i godzina bez strefy czasowej,
+- `TIMESTAMPTZ` - konkretny moment w czasie, zapisywany z uwzględnieniem strefy.
+
+W pipeline'ach danych dobra praktyka jest taka:
+
+- wewnątrz systemu zapisuj czas spójnie, najczęściej w UTC,
+- na lokalny czas zamieniaj dopiero przy prezentacji użytkownikowi,
+- nie mieszaj bezmyślnie dat lokalnych i timestampów z różnych stref.
+
+To chroni przed cichymi błędami, np. przy zmianie czasu letniego i zimowego.
 
 ## BOOLEAN
 
@@ -180,6 +254,14 @@ SELECT CURRENT_DATE AS today;
 SELECT CURRENT_TIMESTAMP AS now;
 ```
 
+W PostgreSQL często używa się też:
+
+```sql
+SELECT NOW() AS now;
+```
+
+`NOW()` zwraca aktualny timestamp dla bieżącego zapytania.
+
 ## EXTRACT
 
 `EXTRACT` wyciąga część daty.
@@ -217,6 +299,19 @@ ORDER BY sales_month;
 SELECT CURRENT_DATE - INTERVAL '7 days' AS seven_days_ago;
 ```
 
+`INTERVAL` można łączyć z datami i timestampami:
+
+```sql
+SELECT
+    order_id,
+    order_date,
+    order_date + INTERVAL '30 days' AS order_date_plus_30_days
+FROM course.orders;
+```
+
+To jest przydatne np. przy terminach płatności, terminach dostawy albo analizie
+okien czasowych.
+
 ## TO_CHAR
 
 `TO_CHAR` formatuje datę jako tekst.
@@ -250,6 +345,25 @@ WHERE created_at >= '2026-05-10'
 
 Dzięki temu łapiesz cały dzień, a nie tylko dokładną północ.
 
+## Konwersja strefy czasowej
+
+Jeżeli pracujesz z timestampem reprezentującym konkretny moment, czasem trzeba
+pokazać go w lokalnej strefie.
+
+Przykład:
+
+```sql
+SELECT
+    TIMESTAMPTZ '2026-07-03 12:00:00+00'
+        AT TIME ZONE 'Europe/Warsaw' AS warsaw_time;
+```
+
+Wynik pokaże ten sam moment przeliczony na czas warszawski.
+
+Na tym etapie nie musisz znać wszystkich szczegółów stref czasowych. Ważne jest
+jedno: daty i godziny w systemach produkcyjnych wymagają dyscypliny, bo błędy
+czasowe są trudne do zauważenia.
+
 ## Dodawanie i odejmowanie dat
 
 Daty można porównywać i odejmować.
@@ -274,13 +388,18 @@ Wynikiem będzie liczba dni.
 
 - Każda kolumna ma typ danych.
 - `INT` to liczby całkowite.
+- `BIGINT` to bardzo duże liczby całkowite.
 - `VARCHAR` to tekst.
+- `TEXT` to długi tekst bez stałego limitu.
 - `NUMERIC` jest dobry do kwot.
+- `FLOAT` jest przybliżony, więc nie jest dobrym wyborem dla pieniędzy.
 - `DATE` to data bez godziny.
 - `TIMESTAMP` to data z godziną.
+- `TIMESTAMPTZ` reprezentuje moment w czasie z uwzględnieniem strefy.
 - `CAST` zmienia typ w wyniku zapytania.
 - `EXTRACT` wyciąga część daty.
 - `DATE_TRUNC` pomaga grupować dane po czasie.
 - `INTERVAL` oznacza odstęp czasu.
+- W pipeline'ach trzymaj czas spójnie, najlepiej w UTC.
 - Przy `TIMESTAMP` filtrowanie całego dnia zwykle rób zakresem od początku dnia
   do początku następnego dnia.

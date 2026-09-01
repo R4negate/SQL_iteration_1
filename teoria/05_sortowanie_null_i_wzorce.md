@@ -96,6 +96,35 @@ To nie jest:
 
 `NULL` oznacza, że wartość jest nieznana albo nie została podana.
 
+## NULL to nie zwykła wartość
+
+W SQL `NULL` działa inaczej niż zwykły tekst albo liczba.
+
+To zapytanie nie znajdzie pustych emaili:
+
+```sql
+SELECT customer_id, customer_name, email
+FROM course.customers
+WHERE email = NULL;
+```
+
+Dlaczego? Bo `NULL` oznacza "nie wiem". SQL nie może powiedzieć, że coś jest
+równe nieznanej wartości.
+
+Dlatego do `NULL` używamy osobnych operatorów:
+
+- `IS NULL`,
+- `IS NOT NULL`.
+
+W SQL warunek może mieć trzy wyniki:
+
+- `TRUE` - prawda,
+- `FALSE` - fałsz,
+- `UNKNOWN` - nie wiadomo, zwykle przez `NULL`.
+
+Wiersz przechodzi przez `WHERE` tylko wtedy, gdy warunek daje `TRUE`.
+Jeżeli warunek daje `FALSE` albo `UNKNOWN`, wiersz nie pojawia się w wyniku.
+
 ## IS NULL
 
 Do sprawdzania `NULL` używamy `IS NULL`.
@@ -179,3 +208,33 @@ albo:
 ```sql
 WHERE email IS NOT NULL
 ```
+
+## NULL i sortowanie
+
+Przy sortowaniu `NULL` też jest 'specjalny'.
+
+W PostgreSQL można jawnie powiedzieć, gdzie mają pojawić się wartości `NULL`:
+
+```sql
+SELECT customer_id, customer_name, email
+FROM course.customers
+ORDER BY email NULLS LAST;
+```
+
+albo:
+
+```sql
+SELECT customer_id, customer_name, email
+FROM course.customers
+ORDER BY email NULLS FIRST;
+```
+
+To jest przydatne w raportach, bo brakujące wartości nie mieszają się wtedy
+przypadkowo z normalnymi wynikami.
+
+## Najważniejsze rzeczy do zapamiętania
+
+- `NULL` oznacza brak albo nieznaną wartość.
+- Do `NULL` używamy `IS NULL` i `IS NOT NULL`.
+- `WHERE email = NULL` jest błędne logicznie.
+- W SQL istnieje trzeci wynik warunku: `UNKNOWN`.
